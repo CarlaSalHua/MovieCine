@@ -10,6 +10,7 @@ import {
 } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { store } from '@/store';
+import AppNavigator from './navigation/AppNavigator';
 
 
 function App() {
@@ -19,9 +20,7 @@ function App() {
     <Provider store={store}>
       <SafeAreaProvider>
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <View>
-          <Text>Hola</Text>
-        </View>
+        <AppNavigator />
       </SafeAreaProvider>
     </Provider>
   );
