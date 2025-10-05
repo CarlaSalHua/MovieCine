@@ -55,6 +55,9 @@ export const styles = StyleSheet.create({
     marginTop: 16, 
     lineHeight: 20 
   },
+  castSection: { 
+    marginTop: 16 
+  },
   section: { 
     color: 'white', 
     fontWeight: '800', 
@@ -68,11 +71,20 @@ export const styles = StyleSheet.create({
     backgroundColor: '#333',
     marginBottom: 6,
   },
+  cast: {
+    width: 100,
+    marginBottom: 12,
+  },
   castName: { 
-    color: 'white' 
+    width: '100%',
+    color: 'white',
+    paddingRight: 8, 
   },
   castChar: { 
     color: '#bbb', 
     fontSize: 12 
   },
+  listPadding: { 
+    paddingHorizontal: 12 
+  }
 });

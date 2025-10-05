@@ -84,12 +84,12 @@ const MovieDetailScreen = ({ route }: MovieDetail) => {
           <Text style={styles.overview}>{movie?.overview}</Text>
         </View>
         {movie?.credits?.cast?.length ? (
-          <View style={{ marginTop: 16 }}>
+          <View style={styles.castSection}>
             <Text style={styles.section}>Cast</Text>
             <FlatList
               data={movie.credits.cast}
               renderItem={({ item }) => (
-                <View style={{ width: 100, marginRight: 12 }}>
+                <View style={styles.cast}>
                   <View style={styles.avatar} />
                   <Text numberOfLines={1} style={styles.castName}>
                     {item.name}
@@ -101,7 +101,7 @@ const MovieDetailScreen = ({ route }: MovieDetail) => {
               )}
               horizontal
               keyExtractor={item => item.id.toString()}
-              contentContainerStyle={{ paddingHorizontal: 12 }}
+              contentContainerStyle={styles.listPadding}
               nestedScrollEnabled
               showsHorizontalScrollIndicator={false}
             />
