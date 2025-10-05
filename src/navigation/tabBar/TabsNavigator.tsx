@@ -5,9 +5,11 @@ import {
 } from '@react-navigation/bottom-tabs';
 import CustomTabBar from './CustomTabBar';
 import MoviesStackNavigator from '../movies/MoviesStackNavigator';
+import FavoritesStackNavigator from '../favorites/FavoritesStackNavigator';
 
 export type BottomTabsParamList = {
   MoviesTab: undefined;
+  FavoritesTab: undefined;
 };
 
 const Tab = createBottomTabNavigator<BottomTabsParamList>();
@@ -19,7 +21,12 @@ const TabsNavigator = () => {
       <Tab.Screen
         name="MoviesTab"
         component={MoviesStackNavigator}
-        options={{ title: 'Películas' }}
+        options={{ title: 'Movies' }}
+      />
+      <Tab.Screen
+        name="FavoritesTab"
+        component={FavoritesStackNavigator}
+        options={{ title: 'Saved' }}
       />
     </Tab.Navigator>
   );
