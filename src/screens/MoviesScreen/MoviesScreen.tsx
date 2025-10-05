@@ -26,10 +26,7 @@ const MoviesScreen = () => {
           <MovieList />
         </SafeAreaView>
       </ScrollView>
-      <MovieFilters
-        isModalVisible={isModalVisible}
-        toggleModal={toggleModal}
-      />
+      <MovieFilters isModalVisible={isModalVisible} toggleModal={toggleModal} />
     </>
   );
 };

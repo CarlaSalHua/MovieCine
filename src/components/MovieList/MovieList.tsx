@@ -1,39 +1,33 @@
 import { Text, View, FlatList } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import MovieCard from '../MovieCard/MovieCard'
 import { styles } from './MovieList.styles'
-
-const dataPrueba = [
-  {
-    id: 1,
-    title: 'Pelicula hola',
-    image: 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    rating: 4.5
-  },
-  {
-    id: 2,
-    title: 'Pelicula holaefefe',
-    image: 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    rating: 4.5
-  },
-  {
-    id: 3,
-    title: 'Pelicula hola',
-    image: 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    rating: 4.5
-  },
-]
-
+import { useAppDispatch, useAppSelector } from '@/store'
+import { fetchPopularMovies } from '@/features/movies/moviesSlice'
 
 const MovieList = () => {
+    const dispatch = useAppDispatch();
+    const { popular, pagePopular } = useAppSelector(state => state.movies);
+  
+    useEffect(() => {
+      dispatch(fetchPopularMovies(1));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+  
+    const handleLoadMore = () => {
+      dispatch(fetchPopularMovies(pagePopular + 1));
+    };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tendencias</Text>
       <FlatList 
-        data={dataPrueba}
-        keyExtractor={item => String(item.id)}
+        data={popular}
+        keyExtractor={(item, index) => String(item.id-index)}
         horizontal
         showsHorizontalScrollIndicator={false}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.7}
         renderItem={({ item }) => (
           <MovieCard 
             movie={item}

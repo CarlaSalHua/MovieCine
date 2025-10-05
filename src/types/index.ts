@@ -33,3 +33,5 @@ export interface UpcomingMoviesResponse {
   total_pages: number;
   total_results: number;
 }
+
+export type SizeImages = "w300" | "w500" | "w780" | "w1280" | "original";

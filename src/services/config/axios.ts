@@ -11,4 +11,17 @@ const API = axios.create({
   timeout: 10000,
 });
 
+//  Errors interceptor
+API.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const status = error.response?.status;
+    const code = error.response?.data?.status_code;
+    const message = error.response?.data?.status_message;
+
+    console.error(`TMDB Error → HTTP ${status} | Code: ${code} | Message: ${message}`);
+    return Promise.reject(new Error(message));
+  }
+);
+
 export default API;
