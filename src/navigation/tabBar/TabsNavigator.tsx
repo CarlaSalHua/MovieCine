@@ -3,8 +3,8 @@ import {
   BottomTabBarProps,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
-import ListMoviesScreen from '@/screens/MoviesScreen.tsx/ListMoviesScreen';
 import CustomTabBar from './CustomTabBar';
+import MoviesStackNavigator from '../movies/MoviesStackNavigator';
 
 export type BottomTabsParamList = {
   MoviesTab: undefined;
@@ -18,7 +18,7 @@ const TabsNavigator = () => {
     <Tab.Navigator screenOptions={{ headerShown: false }} tabBar={renderTabBar}>
       <Tab.Screen
         name="MoviesTab"
-        component={ListMoviesScreen}
+        component={MoviesStackNavigator}
         options={{ title: 'Películas' }}
       />
     </Tab.Navigator>
