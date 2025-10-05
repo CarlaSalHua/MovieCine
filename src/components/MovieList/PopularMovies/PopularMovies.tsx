@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { fetchPopularMovies } from '@/features/movies/moviesSlice';
@@ -9,11 +9,14 @@ import { Movie } from '@/types';
 
 const PopularMovies = () => {
   const dispatch = useAppDispatch();
-  const { popular, pagePopular, loadingPopular, errorPopular, totalPagesPopular } = useAppSelector(
-    state => state.movies,
-  );
+  const {
+    popular,
+    pagePopular,
+    loadingPopular,
+    errorPopular,
+    totalPagesPopular,
+  } = useAppSelector(state => state.movies);
 
-  // Filter out movies that don't have an id or duplicates
   const moviesData = useMemo(
     () => (popular ?? []).filter((m): m is Movie => !!m && !!m.id),
     [popular],
@@ -25,7 +28,7 @@ const PopularMovies = () => {
   }, []);
 
   const handleLoadMorePopular = useCallback(() => {
-    if (!loadingPopular && pagePopular <  totalPagesPopular) {
+    if (!loadingPopular && pagePopular < totalPagesPopular) {
       dispatch(fetchPopularMovies(pagePopular + 1));
     }
   }, [dispatch, loadingPopular, pagePopular, totalPagesPopular]);
@@ -35,10 +38,11 @@ const PopularMovies = () => {
     [],
   );
 
-  if (loadingPopular) {
-    return (
-      <Loading loadingText={loadingPopular && 'Loading Popular Movies...'} />
-    );
+  const isInitialLoading = loadingPopular && moviesData.length === 0;
+  const isLoadingMore = loadingPopular && moviesData.length > 0;
+
+  if (isInitialLoading) {
+    return <Loading loadingText="Loading Popular Movies..." />;
   }
 
   if (errorPopular) {
@@ -52,15 +56,23 @@ const PopularMovies = () => {
         data={moviesData}
         keyExtractor={item => item.id.toString()}
         horizontal
-        initialNumToRender={10}
-        maxToRenderPerBatch={12}
-        removeClippedSubviews
-        showsHorizontalScrollIndicator={false}
+        renderItem={renderMovieItem}
         onEndReached={handleLoadMorePopular}
         onEndReachedThreshold={0.7}
-        renderItem={renderMovieItem}
-        style={styles.listSpacer}
+        showsHorizontalScrollIndicator={false}
+        removeClippedSubviews
         nestedScrollEnabled
+        maintainVisibleContentPosition={{ minIndexForVisible: 0 }}
+        initialNumToRender={10}
+        maxToRenderPerBatch={12}
+        style={styles.listSpacer}
+        ListFooterComponent={
+          isLoadingMore ? (
+            <View style={styles.loaderFooter}>
+              <ActivityIndicator size="small" color="#E50914" />
+            </View>
+          ) : null
+        }
       />
     </View>
   );
@@ -78,5 +90,11 @@ const styles = StyleSheet.create({
   },
   listSpacer: {
     paddingLeft: 16,
+  },
+  loaderFooter: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
   },
 });

@@ -24,7 +24,7 @@ const MoviesScreen = () => {
               <Text style={styles.icon}>☰</Text>
             </Pressable>
           </View>
-          <MovieList />
+          <MovieList/>
         </SafeAreaView>
       </ScrollView>
       <MovieFilters isModalVisible={isModalVisible} toggleModal={toggleModal} />

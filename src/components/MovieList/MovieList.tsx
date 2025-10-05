@@ -8,10 +8,10 @@ const MovieList = () => {
   return (
     <View style={styles.container}>
       {/* Popular Movies */}
-      <PopularMovies />
+      <PopularMovies key={'popular'}/>
 
       {/* Upcoming Movies */}
-      <UpcomingMovies />
+      <UpcomingMovies key={'upcoming'} />
     </View>
   );
 };
