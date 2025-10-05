@@ -1,13 +1,22 @@
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { fetchUpcomingMovies } from '@/features/movies/moviesSlice';
 import MovieCard from '@/components/MovieCard/MovieCard';
 import Loading from '@/components/common/Loading/Loading';
 import TextError from '@/components/common/TextError/TextError';
-import { Movie } from '@/types';
+import { Movie, MoviesStackParamList } from '@/types';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const UpcomingMovies = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<MoviesStackParamList>>();
   const dispatch = useAppDispatch();
   const {
     upcoming,
@@ -33,6 +42,17 @@ const UpcomingMovies = () => {
     }
   }, [dispatch, loadingUpcoming, pageUpcoming, totalPagesUpcoming]);
 
+  const renderMovieItem = useCallback(
+    ({ item }: { item: Movie }) => (
+      <MovieCard
+        movie={item}
+        onPress={() => navigation.navigate('MovieDetail', { movieId: item.id })}
+      />
+    ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
   const isInitialLoading = loadingUpcoming && upcomingData.length === 0;
   const isLoadingMore = loadingUpcoming && upcomingData.length > 0;
 
@@ -55,7 +75,7 @@ const UpcomingMovies = () => {
         showsHorizontalScrollIndicator={false}
         onEndReached={handleLoadMoreUpcoming}
         onEndReachedThreshold={0.7}
-        renderItem={({ item }) => <MovieCard movie={item} />}
+        renderItem={renderMovieItem}
         style={styles.listSpacer}
         ListFooterComponent={
           isLoadingMore ? (
