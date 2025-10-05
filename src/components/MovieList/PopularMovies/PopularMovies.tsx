@@ -5,9 +5,12 @@ import { fetchPopularMovies } from '@/features/movies/moviesSlice';
 import Loading from '@/components/common/Loading/Loading';
 import TextError from '@/components/common/TextError/TextError';
 import MovieCard from '@/components/MovieCard/MovieCard';
-import { Movie } from '@/types';
+import { Movie, MoviesStackParamList } from '@/types';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const PopularMovies = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<MoviesStackParamList>>();
   const dispatch = useAppDispatch();
   const {
     popular,
@@ -27,14 +30,17 @@ const PopularMovies = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Load more popular movies
   const handleLoadMorePopular = useCallback(() => {
     if (!loadingPopular && pagePopular < totalPagesPopular) {
       dispatch(fetchPopularMovies(pagePopular + 1));
     }
   }, [dispatch, loadingPopular, pagePopular, totalPagesPopular]);
 
+  // Render movie item
   const renderMovieItem = useCallback(
-    ({ item }: { item: Movie }) => <MovieCard movie={item} />,
+    ({ item }: { item: Movie }) => <MovieCard movie={item} onPress={() => navigation.navigate('MovieDetail', { movieId: item.id })} />,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

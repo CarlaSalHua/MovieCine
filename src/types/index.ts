@@ -1,3 +1,7 @@
+export type MoviesStackParamList = {
+  MoviesHome: undefined;
+  MovieDetail: { movieId: number };
+};
 
 export interface Movie {
     adult: boolean;
@@ -35,3 +39,37 @@ export interface UpcomingMoviesResponse {
 }
 
 export type SizeImages = "w300" | "w500" | "w780" | "w1280" | "original";
+
+// Detail Types
+export interface Genre {
+  id: number;
+  name: string;
+}
+
+export interface Video {
+  key: string;
+  type: string;
+  site: string;
+}
+
+export interface CastMember {
+  id: number;
+  name: string;
+  character: string;
+  profile_path: string | null;
+}
+
+export interface Credits {
+  cast: CastMember[];
+}
+
+export interface Videos {
+  results: Video[];
+}
+
+export interface MovieDetails extends Movie {
+  runtime?: number;
+  genres?: Genre[];
+  videos?: Videos;
+  credits?: Credits;
+}

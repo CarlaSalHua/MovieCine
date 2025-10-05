@@ -3,7 +3,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MoviesScreen from '@/screens/MoviesScreen/MoviesScreen';
 import MovieDetailScreen from '@/screens/MovieDetailScreen/MovieDetailScreen';
 
-const Stack = createNativeStackNavigator();
+type MoviesStackParamList = {
+  MoviesHome: undefined;
+  MovieDetail: { movieId: number };
+};
+
+const Stack = createNativeStackNavigator<MoviesStackParamList>();
 
 const MoviesStackNavigator = () => {
   return (

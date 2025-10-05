@@ -1,4 +1,5 @@
 import {
+  MovieDetails,
   PopularMoviesResponse,
   SizeImages,
   UpcomingMoviesResponse,
@@ -21,5 +22,9 @@ export const moviesApi = {
   },
   imageUrl: (path: string | null, size: SizeImages = 'w500') => {
     return path ? `${TMDB_IMAGE_BASE}/${size}${path}` : null;
+  },
+  details: async (id: number) => {
+    const { data } = await API.get<MovieDetails>(`/movie/${id}`, { params: { append_to_response: "videos,credits" }});
+    return data;
   },
 };
