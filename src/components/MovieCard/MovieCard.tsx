@@ -28,7 +28,11 @@ const MovieCard = React.memo(({ movie, onPress }: MovieCardProps) => {
         <Text numberOfLines={1} style={styles.title}>
           {movie.title}
         </Text>
-        <Text style={styles.rating}>★ {movie.popularity}</Text>
+        {
+          movie.vote_average > 0 ? (
+            <Text style={styles.rating}>★ {movie.vote_average}</Text>
+          ) : null
+        }
       </View>
       <Pressable
         style={({ pressed }) => [
