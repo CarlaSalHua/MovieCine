@@ -11,7 +11,6 @@ export const moviesApi = {
     const { data } = await API.get<PopularMoviesResponse>(
       `/movie/popular?page=${page}`,
     );
-    console.log(data);
     return data;
   },
   upcoming: async (page: number = 1) => {

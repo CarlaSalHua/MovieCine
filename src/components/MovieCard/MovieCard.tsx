@@ -10,7 +10,7 @@ interface MovieCardProps {
   onPress?: () => void;
 }
 
-const MovieCard = ({ movie, onPress }: MovieCardProps) => {
+const MovieCard = React.memo(({ movie, onPress }: MovieCardProps) => {
   // calling the images api
   const poster = moviesApi.imageUrl(movie.poster_path) as string | undefined;
 
@@ -40,6 +40,6 @@ const MovieCard = ({ movie, onPress }: MovieCardProps) => {
       </Pressable>
     </Pressable>
   );
-};
+});
 
 export default MovieCard;

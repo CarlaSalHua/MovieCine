@@ -4,6 +4,9 @@ export const styles = StyleSheet.create({
   container: { 
     marginTop: 16 
   },
+  subContainer: {
+    marginTop: 32,
+  },
   title: {
     color: "white",
     fontSize: 18,

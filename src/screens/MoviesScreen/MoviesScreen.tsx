@@ -15,6 +15,7 @@ const MoviesScreen = () => {
       <ScrollView
         style={styles.container}
         contentInsetAdjustmentBehavior="automatic"
+        nestedScrollEnabled={true}
       >
         <SafeAreaView>
           <View style={styles.headerContainer}>
