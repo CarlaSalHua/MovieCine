@@ -1,17 +1,24 @@
-import {  View } from 'react-native';
 import React from 'react';
+import { View } from 'react-native';
 import { styles } from './MovieList.styles';
-import PopularMovies from './PopularMovies/PopularMovies';
-import UpcomingMovies from './UpcomingMovies/UpcomingMovies';
+import MoviesSection from '../MoviesSection/MoviesSection';
+import { MoviesSectionKey } from '../MoviesSection/MoviesSection.config';
+
+const sections: Array<{ key: MoviesSectionKey; containerStyle?: object }> = [
+  { key: 'popular' },
+  { key: 'upcoming', containerStyle: styles.sectionSpacing },
+];
 
 const MovieList = () => {
   return (
     <View style={styles.container}>
-      {/* Popular Movies */}
-      <PopularMovies key={'popular'}/>
-
-      {/* Upcoming Movies */}
-      <UpcomingMovies key={'upcoming'} />
+      {sections.map(({ key, containerStyle }) => (
+        <MoviesSection
+          key={key}
+          section={key}
+          containerStyle={containerStyle}
+        />
+      ))}
     </View>
   );
 };
