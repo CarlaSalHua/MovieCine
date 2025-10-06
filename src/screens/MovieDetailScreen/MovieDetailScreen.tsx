@@ -8,13 +8,14 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import React, { useEffect } from 'react';
-import { styles } from './MovieDetailScreen,styles';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { styles } from './MovieDetailScreen.styles';
 import { MovieDetails } from '@/types';
 import { moviesApi } from '@/services/api/moviesApi';
 import movieImage from '@/assets/images/index';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSaveMovies } from '@/hooks/useSaveMovies';
 
 interface MovieDetail {
   route: { params: { movieId: number } };
@@ -22,6 +23,7 @@ interface MovieDetail {
 
 const MovieDetailScreen = ({ route }: MovieDetail) => {
   const navigation = useNavigation();
+  const { toggleSave, savedItems } = useSaveMovies();
   const movieId = route.params.movieId;
   const [movie, setMovie] = React.useState<MovieDetails | null>(null);
   const backdrop = moviesApi.imageUrl(movie?.backdrop_path ?? null, 'w500');
@@ -31,6 +33,8 @@ const MovieDetailScreen = ({ route }: MovieDetail) => {
     v => v.site === 'YouTube' && v.type.toLowerCase().includes('trailer'),
   )?.key;
 
+  const isSaved = useMemo(() => Boolean(savedItems[movieId]), [savedItems, movieId]);
+
   useEffect(() => {
     const getDetails = async () => {
       const data = await moviesApi.details(movieId);
@@ -39,6 +43,10 @@ const MovieDetailScreen = ({ route }: MovieDetail) => {
 
     getDetails();
   }, [movieId]);
+
+  const handleToggleSave = useCallback(() => {
+    toggleSave(movieId, movie ?? undefined);
+  }, [movieId, movie, toggleSave]);
 
   return (
     <ScrollView style={styles.container} nestedScrollEnabled>
@@ -65,8 +73,20 @@ const MovieDetailScreen = ({ route }: MovieDetail) => {
             {movie?.runtime ? `${movie.runtime}m` : '–'} · {genres}
           </Text>
           <View style={styles.actions}>
-            <Pressable style={[styles.btn, styles.save]}>
-              <Text style={styles.btnText}>Save to Watchlist</Text>
+            <Pressable
+              onPress={handleToggleSave}
+              disabled={!movie}
+              style={({ pressed }) => [
+                styles.btn,
+                styles.save,
+                isSaved && styles.saveActive,
+                pressed && styles.btnPressed,
+                !movie && styles.btnDisabled,
+              ]}
+            >
+              <Text style={styles.btnText}>
+                {isSaved ? 'Saved to Watchlist' : '+ Save to Watchlist'}
+              </Text>
             </Pressable>
             {trailerKey ? (
               <Pressable
@@ -75,7 +95,11 @@ const MovieDetailScreen = ({ route }: MovieDetail) => {
                     `https://www.youtube.com/watch?v=${trailerKey}`,
                   )
                 }
-                style={[styles.btn, styles.trailer]}
+                style={({ pressed }) => [
+                  styles.btn,
+                  styles.trailer,
+                  pressed && styles.btnPressed,
+                ]}
               >
                 <Text style={styles.btnText}>Play Trailer</Text>
               </Pressable>

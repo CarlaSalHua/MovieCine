@@ -9,7 +9,7 @@ export function useSaveMovies() {
   const { items: savedItems } = useAppSelector((s) => s.saved);
 
   const toggleSave = useCallback(
-    async (id: number) => {
+    async (id: number, details?: MovieDetails | null) => {
       if (savedItems[id]) {
         const nextItems = { ...savedItems };
         delete nextItems[id];
@@ -18,9 +18,9 @@ export function useSaveMovies() {
         return;
       }
 
-      const details = await moviesApi.details(id);
-      const nextItems = { ...savedItems, [id]: details as MovieDetails };
-      dispatch(saveMovie(details as MovieDetails));
+      const movieDetails = details ?? (await moviesApi.details(id));
+      const nextItems = { ...savedItems, [id]: movieDetails as MovieDetails };
+      dispatch(saveMovie(movieDetails as MovieDetails));
       dispatch(persistSaved(nextItems));
     },
     [dispatch, savedItems]

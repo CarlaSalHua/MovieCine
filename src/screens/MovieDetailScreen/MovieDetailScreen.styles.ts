@@ -40,29 +40,38 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 14,
     borderRadius: 12,
   },
-  save: { 
-    backgroundColor: '#2b2b2b' 
+  btnPressed: {
+    opacity: 0.85,
   },
-  trailer: { 
-    backgroundColor: '#E50914'
+  btnDisabled: {
+    opacity: 0.6,
   },
-  btnText: { 
-    color: 'white', 
-    fontWeight: '700' 
+  save: {
+    backgroundColor: '#2b2b2b',
   },
-  overview: { 
-    color: '#e6e6e6', 
-    marginTop: 16, 
-    lineHeight: 20 
+  saveActive: {
+    backgroundColor: '#E50914',
   },
-  castSection: { 
-    marginTop: 16 
+  trailer: {
+    backgroundColor: '#E50914',
   },
-  section: { 
-    color: 'white', 
-    fontWeight: '800', 
+  btnText: {
+    color: 'white',
+    fontWeight: '700',
+  },
+  overview: {
+    color: '#e6e6e6',
+    marginTop: 16,
+    lineHeight: 20,
+  },
+  castSection: {
+    marginTop: 16,
+  },
+  section: {
+    color: 'white',
+    fontWeight: '800',
     fontSize: 18,
-    padding: 16 
+    padding: 16,
   },
   avatar: {
     width: 80,
@@ -75,16 +84,16 @@ export const styles = StyleSheet.create({
     width: 100,
     marginBottom: 12,
   },
-  castName: { 
+  castName: {
     width: '100%',
     color: 'white',
-    paddingRight: 8, 
+    paddingRight: 8,
   },
-  castChar: { 
-    color: '#bbb', 
-    fontSize: 12 
+  castChar: {
+    color: '#bbb',
+    fontSize: 12,
   },
-  listPadding: { 
-    paddingHorizontal: 12 
-  }
+  listPadding: {
+    paddingHorizontal: 12,
+  },
 });
