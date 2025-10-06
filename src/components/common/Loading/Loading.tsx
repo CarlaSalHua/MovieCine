@@ -12,13 +12,15 @@ const Loading = ({ loadingText }: { loadingText?: string }) => {
   );
 };
 
-export default Loading;
+export default React.memo(Loading);
 
 const styles = StyleSheet.create({
   containerLoadind: { 
     flex: 1, 
     justifyContent: 'center', 
-    alignItems: 'center' 
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 16, 
   },
   text: {
     color: '#fff',
