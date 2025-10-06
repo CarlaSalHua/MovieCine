@@ -66,10 +66,13 @@ This structure keeps discovery and saved items separated while sharing stack tra
 - **Future work**: integrate React Native Testing Library for component interaction tests.
 
 ## Technologies
-- React Native 0.81 + React 19
+- React Native 0.81 + React 19 
 - TypeScript 5
 - Redux Toolkit & React Redux
 - React Navigation (Bottom Tabs + Native Stack)
 - Axios for HTTP requests
 - AsyncStorage for local persistence
 - React Native Gesture Handler & Reanimated for enhanced interactions
+
+## Documentation
+- https://reactnative.dev/docs/environment-setup
