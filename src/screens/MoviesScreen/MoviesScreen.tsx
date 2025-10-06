@@ -24,6 +24,7 @@ const MoviesScreen = () => {
               <Text style={styles.icon}>☰</Text>
             </Pressable>
           </View>
+          {/*  List of movies */}
           <MovieList/>
         </SafeAreaView>
       </ScrollView>
