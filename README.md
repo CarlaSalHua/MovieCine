@@ -6,6 +6,7 @@ MovieCine is a React Native application that helps you discover popular and upco
 - [Setup](#setup)
 - [Features](#features)
 - [Navigation](#navigation)
+- [Folder Structure](#folder-structure)
 - [Architecture](#architecture)
 - [Testing](#testing)
 - [Technologies](#technologies)
@@ -52,6 +53,44 @@ MovieCine uses React Navigation with two levels:
 
 This structure keeps discovery and saved items separated while sharing stack transitions for detail screens.
 
+## Folder Structure
+```
+MovieCine/
+|-- android/
+|-- ios/
+|-- src/
+|   |-- assets/
+|   |   `-- images/
+|   |-- components/
+|   |   |-- common/
+|   |   |   |-- Loading/
+|   |   |   |-- SectionHeader/
+|   |   |   `-- TextError/
+|   |   |-- MovieCard/
+|   |   |-- MovieFilters/
+|   |   |-- MovieHorizontalList/
+|   |   |-- MovieList/
+|   |   |-- MoviesSection/
+|   |   `-- SavedMovie/
+|   |-- features/
+|   |   |-- movies/
+|   |   `-- saved/
+|   |-- hooks/
+|   |-- navigation/
+|   |   |-- favorites/
+|   |   |-- movies/
+|   |   `-- tabBar/
+|   |-- screens/
+|   |   |-- FavoriteScreen/
+|   |   |-- MovieDetailScreen/
+|   |   `-- MoviesScreen/
+|   |-- services/
+|   |   |-- api/
+|   |   `-- config/
+|   |-- store/
+|   `-- types/
+`-- README.md
+```
 ## Architecture
 - **State management**: Redux Toolkit slices (`moviesSlice`, `savedSlice`). Async thunks orchestrate API calls and pagination.
 - **Data flows**:
