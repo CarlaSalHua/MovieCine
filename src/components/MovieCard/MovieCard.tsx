@@ -9,9 +9,10 @@ interface MovieCardProps {
   movie: Movie;
   onPress?: () => void;
   onPressSave?: () => void;
+  isSaved?: boolean;
 }
 
-const MovieCard = React.memo(({ movie, onPress, onPressSave  }: MovieCardProps) => {
+const MovieCard = React.memo(({ movie, onPress, onPressSave, isSaved = false }: MovieCardProps) => {
   // calling the images api
   const poster = moviesApi.imageUrl(movie.poster_path) as string | undefined;
 
@@ -39,10 +40,13 @@ const MovieCard = React.memo(({ movie, onPress, onPressSave  }: MovieCardProps) 
         onPress={onPressSave}
         style={({ pressed }) => [
           styles.saveBtn,
+          isSaved && styles.saveBtnActive,
           pressed && styles.buttonPressed,
         ]}
       >
-        <Text style={styles.saveTxt}>+ Save</Text>
+        <Text style={[styles.saveTxt, isSaved && styles.saveTxtActive]}>
+          {isSaved ? 'Saved' : '+ Save'}
+        </Text>
       </Pressable>
     </Pressable>
   );

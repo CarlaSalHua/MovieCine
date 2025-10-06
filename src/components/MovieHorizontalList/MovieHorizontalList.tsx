@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { Movie } from "@/types";
 import MovieCard from "@/components/MovieCard/MovieCard";
@@ -9,6 +9,7 @@ type MovieHorizontalListProps = {
   onEndReached: () => void;
   onPressItem: (movieId: number) => void;
   onPressSave: (movieId: number) => void;
+  isSaved?: (movieId: number) => boolean;
   loadingMore?: boolean;
 };
 
@@ -17,8 +18,14 @@ const MovieHorizontalList: React.FC<MovieHorizontalListProps> = ({
   onEndReached,
   onPressItem,
   onPressSave,
+  isSaved,
   loadingMore,
 }) => {
+  const getIsSaved = useCallback(
+    (movieId: number) => (isSaved ? isSaved(movieId) : false),
+    [isSaved]
+  );
+
   return (
     <FlatList
       data={data}
@@ -29,6 +36,7 @@ const MovieHorizontalList: React.FC<MovieHorizontalListProps> = ({
           movie={item}
           onPress={() => onPressItem(item.id)}
           onPressSave={() => onPressSave(item.id)}
+          isSaved={getIsSaved(item.id)}
         />
       )}
       onEndReached={onEndReached}
@@ -48,7 +56,7 @@ const MovieHorizontalList: React.FC<MovieHorizontalListProps> = ({
 export default React.memo(MovieHorizontalList);
 
 const styles = StyleSheet.create({
-  list: { 
-    paddingLeft: 16 
+  list: {
+    paddingLeft: 16,
   },
 });

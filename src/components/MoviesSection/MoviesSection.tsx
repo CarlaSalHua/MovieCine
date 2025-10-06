@@ -20,7 +20,7 @@ interface Props {
 
 const MoviesSection: React.FC<Props> = ({ section, containerStyle }) => {
   const navigation = useNavigation<NativeStackNavigationProp<MoviesStackParamList>>();
-  const { toggleSave } = useSaveMovies();
+  const { toggleSave, savedItems } = useSaveMovies();
 
   const {
     title,
@@ -37,6 +37,8 @@ const MoviesSection: React.FC<Props> = ({ section, containerStyle }) => {
     [navigation]
   );
 
+  const isSaved = useCallback((movieId: number) => Boolean(savedItems[movieId]), [savedItems]);
+
   if (isInitialLoading) return <Loading loadingText={loadingText} />;
   if (error) return <TextError textError={error} />;
 
@@ -48,6 +50,7 @@ const MoviesSection: React.FC<Props> = ({ section, containerStyle }) => {
         onEndReached={loadMore}
         onPressItem={handleOpenDetail}
         onPressSave={toggleSave}
+        isSaved={isSaved}
         loadingMore={isLoadingMore}
       />
     </View>

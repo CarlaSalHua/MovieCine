@@ -38,6 +38,9 @@ export const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 20,
   },
+  saveBtnActive: {
+    backgroundColor: '#E50914',
+  },
   buttonPressed: {
     backgroundColor: '#d60712ff',
     opacity: 0.9,
@@ -45,5 +48,8 @@ export const styles = StyleSheet.create({
   saveTxt: {
     color: 'white',
     fontWeight: '700',
+  },
+  saveTxtActive: {
+    color: 'white',
   },
 });
