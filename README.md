@@ -13,7 +13,9 @@ MovieCine is a React Native application that helps you discover popular and upco
 ## Setup
 1. **Install dependencies**
    ```bash
-   npm install
+   npm install  
+   
+   (use npm version > 10, node version > 20 )
    ```
 2. **Environment variables**
    - Copy `.env.example` (or create `.env`) and provide your TMDB credentials, e.g.
