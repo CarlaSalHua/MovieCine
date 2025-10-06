@@ -1,97 +1,73 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# MovieCine
 
-# Getting Started
+MovieCine is a React Native application that helps you discover popular and upcoming movies, browse detailed information, and build a personal watchlist that syncs locally.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Table of Contents
+- [Setup](#setup)
+- [Features](#features)
+- [Navigation](#navigation)
+- [Architecture](#architecture)
+- [Testing](#testing)
+- [Technologies](#technologies)
 
-## Step 1: Start Metro
+## Setup
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+2. **Environment variables**
+   - Copy `.env.example` (or create `.env`) and provide your TMDB credentials, e.g.
+     ```env
+     TMDB_API_BASE=https://api.themoviedb.org/3
+     TMDB_IMAGE_BASE=https://image.tmdb.org/t/p
+     TMDB_API_KEY=your_key_here
+     TMDB_READ_TOKEN=your_token_here
+     ```
+3. **Run Metro bundler**
+   ```bash
+   npm start
+   ```
+4. **Run the app**
+   ```bash
+   npm run android   # or npm run ios
+   ```
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Features
+- **Movies list**: horizontal rails for Popular and Upcoming titles with infinite scroll.
+- **Movie detail view**: trailers, runtime, genres, synopsis, and cast list.
+- **Savedlist**: toggle movies between saved/unsaved state; persists locally with AsyncStorage.
+- **Filters modal**: prepare for future filtering without leaving the main screen *(is not working yet).
+- **Offline-friendly assets**: fallback poster image when the API lacks artwork.
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## Navigation
+MovieCine uses React Navigation with two levels:
+- **Bottom Tabs (`TabsNavigator`)**
+  - `MoviesTab`: entry point for browsing content.
+  - `FavoritesTab`: displays the user savedlist.
+- **Native Stack (`MoviesStackNavigator`)**
+  - `MoviesHome`: `MoviesScreen` hosting the horizontal lists.
+  - `MovieDetail`: full detail page. Stack navigation allows going back to the lists while preserving scroll position.
 
-```sh
-# Using npm
-npm start
+This structure keeps discovery and saved items separated while sharing stack transitions for detail screens.
 
-# OR using Yarn
-yarn start
-```
+## Architecture
+- **State management**: Redux Toolkit slices (`moviesSlice`, `savedSlice`). Async thunks orchestrate API calls and pagination.
+- **Data flows**:
+  - `useMoviesSection` hook encapsulates fetch, memoization, and pagination per rail.
+  - `useSaveMovies` hook centralizes toggling logic and AsyncStorage persistence.
+- **UI composition**: reusable components (`MovieHorizontalList`, `MovieCard`, `SectionHeader`) keep presentation separate from data orchestration.
+- **Async persistence**: watchlist hydrates on app start (`loadSaved`) and writes through on every toggle (`persistSaved`).
 
-## Step 2: Build and run your app
+## Testing (future updates)
+- **Unit tests**: configured via Jest (`npm test`). Focus areas include hooks (e.g., `useMoviesSection`) and slices reducers.
+- **Manual QA**: verify navigation flows, pagination, watchlist toggling, and offline poster fallback on both Android and iOS simulators.
+- **Future work**: integrate React Native Testing Library for component interaction tests.
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## Technologies
+- React Native 0.81 + React 19
+- TypeScript 5
+- Redux Toolkit & React Redux
+- React Navigation (Bottom Tabs + Native Stack)
+- Axios for HTTP requests
+- AsyncStorage for local persistence
+- React Native Gesture Handler & Reanimated for enhanced interactions
