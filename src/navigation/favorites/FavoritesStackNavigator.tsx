@@ -3,7 +3,12 @@ import MovieDetailScreen from '@/screens/MovieDetailScreen/MovieDetailScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
-const Stack = createNativeStackNavigator();
+type FavoritesStackParamList = {
+  SavedHome: undefined;
+  MovieDetail: { movieId: number };
+};
+
+const Stack = createNativeStackNavigator<FavoritesStackParamList>();
 
 const FavoritesStackNavigator = () => {
   return (

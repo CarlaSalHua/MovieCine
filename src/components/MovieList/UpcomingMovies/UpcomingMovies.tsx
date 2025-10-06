@@ -11,12 +11,15 @@ import { fetchUpcomingMovies } from '@/features/movies/moviesSlice';
 import MovieCard from '@/components/MovieCard/MovieCard';
 import Loading from '@/components/common/Loading/Loading';
 import TextError from '@/components/common/TextError/TextError';
-import { Movie, MoviesStackParamList } from '@/types';
+import { Movie, MovieDetails, MoviesStackParamList } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { removeMovie, saveMovie } from '@/features/saved/savedSlice';
+import { moviesApi } from '@/services/api/moviesApi';
 
 const UpcomingMovies = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<MoviesStackParamList>>();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<MoviesStackParamList>>();
   const dispatch = useAppDispatch();
   const {
     upcoming,
@@ -25,6 +28,8 @@ const UpcomingMovies = () => {
     errorUpcoming,
     totalPagesUpcoming,
   } = useAppSelector(state => state.movies);
+    const { items: savedItems } = useAppSelector(state => state.saved);
+  
 
   const upcomingData = useMemo(
     () => (upcoming ?? []).filter((m): m is Movie => !!m && !!m.id),
@@ -42,11 +47,21 @@ const UpcomingMovies = () => {
     }
   }, [dispatch, loadingUpcoming, pageUpcoming, totalPagesUpcoming]);
 
+  const handleToggleSave = async (id: number) => {
+    const details = await moviesApi.details(id);
+    if (savedItems[id]) {
+      dispatch(removeMovie(id));
+    } else {
+      dispatch(saveMovie(details as MovieDetails));
+    }
+  };
+
   const renderMovieItem = useCallback(
     ({ item }: { item: Movie }) => (
       <MovieCard
         movie={item}
         onPress={() => navigation.navigate('MovieDetail', { movieId: item.id })}
+        onPressSave={() => handleToggleSave(item.id)}
       />
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps

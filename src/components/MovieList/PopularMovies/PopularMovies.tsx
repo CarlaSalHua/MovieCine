@@ -1,16 +1,25 @@
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { fetchPopularMovies } from '@/features/movies/moviesSlice';
 import Loading from '@/components/common/Loading/Loading';
 import TextError from '@/components/common/TextError/TextError';
 import MovieCard from '@/components/MovieCard/MovieCard';
-import { Movie, MoviesStackParamList } from '@/types';
+import { Movie, MovieDetails, MoviesStackParamList } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { removeMovie, saveMovie } from '@/features/saved/savedSlice';
+import { moviesApi } from '@/services/api/moviesApi';
 
 const PopularMovies = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<MoviesStackParamList>>();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<MoviesStackParamList>>();
   const dispatch = useAppDispatch();
   const {
     popular,
@@ -19,6 +28,7 @@ const PopularMovies = () => {
     errorPopular,
     totalPagesPopular,
   } = useAppSelector(state => state.movies);
+  const { items: savedItems } = useAppSelector(state => state.saved);
 
   const moviesData = useMemo(
     () => (popular ?? []).filter((m): m is Movie => !!m && !!m.id),
@@ -37,9 +47,25 @@ const PopularMovies = () => {
     }
   }, [dispatch, loadingPopular, pagePopular, totalPagesPopular]);
 
+  // Handle toggle save
+  const handleToggleSave = async (id : number) => {
+    const details = await moviesApi.details(id);
+    if (savedItems[id]) {
+      dispatch(removeMovie(id));
+    } else {
+      dispatch(saveMovie(details as MovieDetails));
+    }
+  };
+
   // Render movie item
   const renderMovieItem = useCallback(
-    ({ item }: { item: Movie }) => <MovieCard movie={item} onPress={() => navigation.navigate('MovieDetail', { movieId: item.id })} />,
+    ({ item }: { item: Movie }) => (
+      <MovieCard
+        movie={item}
+        onPress={() => navigation.navigate('MovieDetail', { movieId: item.id })}
+        onPressSave={() => handleToggleSave(item.id)}
+      />
+    ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );

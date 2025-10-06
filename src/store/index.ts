@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch, useSelector } from 'react-redux'
 import moviesReducer from '@/features/movies/moviesSlice'
+import savedReducer from '@/features/saved/savedSlice'
 
 export const store = configureStore({
   reducer: {
-    movies: moviesReducer
+    movies: moviesReducer,
+    saved: savedReducer
   },
 })
 

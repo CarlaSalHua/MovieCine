@@ -8,9 +8,10 @@ import { moviesApi } from '@/services/api/moviesApi';
 interface MovieCardProps {
   movie: Movie;
   onPress?: () => void;
+  onPressSave?: () => void;
 }
 
-const MovieCard = React.memo(({ movie, onPress }: MovieCardProps) => {
+const MovieCard = React.memo(({ movie, onPress, onPressSave  }: MovieCardProps) => {
   // calling the images api
   const poster = moviesApi.imageUrl(movie.poster_path) as string | undefined;
 
@@ -35,6 +36,7 @@ const MovieCard = React.memo(({ movie, onPress }: MovieCardProps) => {
         }
       </View>
       <Pressable
+        onPress={onPressSave}
         style={({ pressed }) => [
           styles.saveBtn,
           pressed && styles.buttonPressed,
